@@ -1,0 +1,36 @@
+{
+  "name": "@zhangwj0520/tailwind-base",
+  "version": "0.0.1",
+  "description": "tailwind预设",
+  "keywords": [
+    "tailwind",
+    "presets",
+    "css"
+  ],
+  "author": {
+    "name": "zhangweijie",
+    "email": "zhangwj0520@hotmail.com",
+    "url": "https://github.com/zhangwj0520"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/zhangwj0520",
+  "repository": {
+    "url": "https://github.com/zhangwj0520/my-package.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zhangwj0520/my-package/issues"
+  },
+  "main": "./src/tailwind.config.js",
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">=3.0.0 || insiders"
+  },
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.7"
+  }
+}

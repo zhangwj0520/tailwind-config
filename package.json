@@ -1,0 +1,31 @@
+{
+  "name": "base-package",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "release": "changeset&&changeset version",
+    "pb": "changeset publish",
+    "release1": "bumpp -r"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.26.0",
+    "@zhangwj0520/eslint-config-ts": "latest",
+    "prettier": "latest",
+    "turbo": "latest"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "bumpp": "^9.0.0"
+  },
+  "packageManager": "pnpm@7.28.0"
+}
