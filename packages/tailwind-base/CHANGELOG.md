@@ -1,5 +1,11 @@
 # @zhangwj0520/tailwind-base
 
+## 0.0.3
+
+### Patch Changes
+
+- 39f6181: chang name
+
 ## 0.0.2
 
 ### Patch Changes
