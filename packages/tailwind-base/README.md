@@ -5,7 +5,7 @@
 在tailwind.config.js文件中
 
 ```js
-const presets = require('@motato/tailwind-base')
+const presets = require('@zhangwj0520/tailwind-base')
 
 module.exports = {
   presets: [presets],
