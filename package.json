@@ -12,10 +12,11 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "release": "changeset&&changeset version",
-    "pb": "changeset publish",
-    "sync": "pnpx tsx ./scripts/sync.ts",
-    "sync-cestc": "pnpm tsx ./scripts/sync-cestc.ts",
-    "release1": "bumpp -r"
+    "pb-pkg": "changeset publish",
+    "sync": "esno ./scripts/sync.ts",
+    "sync-cestc": "esno ./scripts/sync-cestc.ts",
+    "release1": "bumpp -r",
+    "pb": "pnpm run release&&pnpm run pb-pkg&&pnpm run sync"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",
