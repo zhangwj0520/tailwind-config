@@ -11,6 +11,12 @@ module.exports = {
   },
   plugins: [
     addDynamicIconSelectors({
+      iconSets: {
+        // custom: customSet.export(),
+        cestc: {
+          path:'src/assets/icons',
+        }
+      },
 
     }),
   ],

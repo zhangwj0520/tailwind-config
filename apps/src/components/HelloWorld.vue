@@ -12,6 +12,7 @@ defineProps<{
     <div className="text-3xl demo">
           <span className="icon-[vscode-icons--file-type-access] hover:icon-hover-[vscode-icons--file-type-access2]"></span>
           <span className="icon-[vscode-icons--file-type-vue]"></span>
+          <span className="icon-[cestc--file]"></span>
         </div>
 
     <h3>

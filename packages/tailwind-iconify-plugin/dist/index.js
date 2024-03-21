@@ -337,6 +337,41 @@ function getIconsCSSData(iconSet, names, options = {}) {
 
 // src/loader.ts
 var _fs = require('fs');
+
+// src/importSvg.ts
+var _tools = require('@iconify/tools');
+var importSvg = (path) => {
+  const customSet = _tools.importDirectorySync.call(void 0, path);
+  customSet.forEachSync((name, type) => {
+    if (type !== "icon") {
+      return;
+    }
+    const svg = customSet.toSVG(name);
+    if (!svg) {
+      customSet.remove(name);
+      return;
+    }
+    try {
+      _tools.cleanupSVG.call(void 0, svg);
+      _tools.parseColors.call(void 0, svg, {
+        defaultColor: "currentColor"
+        // callback: (attr, colorStr, color) => {
+        //   return !color || isEmptyColor(color) ? colorStr : 'currentColor'
+        // },
+      });
+      _tools.runSVGO.call(void 0, svg);
+    } catch (err) {
+      console.error(`Error parsing ${name}:`, err);
+      customSet.remove(name);
+      return;
+    }
+    customSet.fromSVG(name, svg);
+  });
+  return customSet.export();
+};
+var importSvg_default = importSvg;
+
+// src/loader.ts
 function locateIconSet(prefix) {
   try {
     const main = __require.resolve(`@iconify-json/${prefix}/icons.json`);
@@ -345,26 +380,35 @@ function locateIconSet(prefix) {
       main,
       info
     };
-  } catch (e) {
+  } catch (error) {
+    console.log(error);
   }
   try {
     const main = __require.resolve(`@iconify/json/json/${prefix}.json`);
     return {
       main
     };
-  } catch (e2) {
+  } catch (error) {
+    console.log(error);
   }
+  return void 0;
 }
 var cache = /* @__PURE__ */ Object.create(null);
 function loadIconSet(prefix, options) {
   let filename;
-  const customIconSet = _optionalChain([options, 'access', _3 => _3.iconSets, 'optionalAccess', _4 => _4[prefix]]);
-  if (customIconSet) {
+  if (_optionalChain([options, 'access', _3 => _3.iconSets, 'optionalAccess', _4 => _4[prefix]])) {
+    const customIconSet = _optionalChain([options, 'access', _5 => _5.iconSets, 'optionalAccess', _6 => _6[prefix]]);
     switch (typeof customIconSet) {
       case "function": {
         const result = customIconSet();
         options.iconSets[prefix] = result;
         return result;
+      }
+      case "object": {
+        if (customIconSet.path) {
+          return importSvg_default(customIconSet.path);
+        }
+        break;
       }
       case "string": {
         filename = {
@@ -379,7 +423,7 @@ function loadIconSet(prefix, options) {
     filename = locateIconSet(prefix);
   }
   if (!filename) {
-    return;
+    return void 0;
   }
   const main = typeof filename === "string" ? filename : filename.main;
   if (cache[main]) {
@@ -392,8 +436,10 @@ function loadIconSet(prefix, options) {
     }
     cache[main] = result;
     return result;
-  } catch (e3) {
+  } catch (error) {
+    console.log("error", error);
   }
+  return void 0;
 }
 
 // ../../node_modules/.pnpm/@iconify+utils@2.1.22/node_modules/@iconify/utils/lib/icon/name.mjs
@@ -418,7 +464,7 @@ function getIconNames(icons) {
   } else {
     return;
   }
-  if (_optionalChain([iconNames, 'optionalAccess', _5 => _5.length])) {
+  if (_optionalChain([iconNames, 'optionalAccess', _7 => _7.length])) {
     iconNames.forEach((icon) => {
       if (!icon.trim()) {
         return;
@@ -467,7 +513,7 @@ function getCSSRulesForIcons(icons, options = {}) {
 
 // src/dynamic.ts
 function getDynamicCSSRules(icon, { scale = 1, ...options } = {}) {
-  const nameParts = icon.split(/--|\:/);
+  const nameParts = icon.split(/--|:/);
   if (nameParts.length !== 2) {
     throw new Error(`Invalid icon name: "${icon}"`);
   }
@@ -494,7 +540,7 @@ function getDynamicCSSRules(icon, { scale = 1, ...options } = {}) {
   }
   return {
     // Common rules
-    ...options.overrideOnly || !_optionalChain([generated, 'access', _6 => _6.common, 'optionalAccess', _7 => _7.rules]) ? {} : generated.common.rules,
+    ...options.overrideOnly || !_optionalChain([generated, 'access', _8 => _8.common, 'optionalAccess', _9 => _9.rules]) ? {} : generated.common.rules,
     // Icon rules
     ...generated.css[0].rules
   };
@@ -502,7 +548,7 @@ function getDynamicCSSRules(icon, { scale = 1, ...options } = {}) {
 
 // src/index.ts
 function addDynamicIconSelectors(options) {
-  const prefix = _optionalChain([options, 'optionalAccess', _8 => _8.prefix]) || "icon";
+  const prefix = _optionalChain([options, 'optionalAccess', _10 => _10.prefix]) || "icon";
   return _plugin2.default.call(void 0, ({ matchComponents }) => {
     matchComponents({
       [prefix]: (icon) => getDynamicCSSRules(icon, options)

@@ -1,10 +1,15 @@
 import { readFileSync } from 'fs';
 import type { IconifyJSON } from '@iconify/types';
+import importSvg from './importSvg';
 
 /**
  * Callback for loading icon set
  */
 type IconifyJSONLoaderCallback = () => IconifyJSON;
+
+interface LocalSetConfig {
+  path: string;
+}
 
 /**
  * Options for icon set loaders
@@ -12,8 +17,7 @@ type IconifyJSONLoaderCallback = () => IconifyJSON;
 export interface IconifyPluginLoaderOptions {
   // Custom icon sets
   // Value can be loaded icon set or callback that loads icon set
-  iconSets?: Record<string, IconifyJSON | string | IconifyJSONLoaderCallback>;
-  iconLocalSets?: Record<string, string>;
+  iconSets?: Record<string, IconifyJSON | string | IconifyJSONLoaderCallback | LocalSetConfig>;
 }
 
 /**
@@ -31,13 +35,18 @@ export function locateIconSet(prefix: string): LocatedIconSet | undefined {
       main,
       info,
     };
-  } catch { }
+  } catch (error) {
+    console.log(error);
+  }
   try {
     const main = require.resolve(`@iconify/json/json/${prefix}.json`);
     return {
       main,
     };
-  } catch { }
+  } catch (error) {
+    console.log(error);
+  }
+  return undefined;
 }
 
 /**
@@ -54,17 +63,24 @@ const cache = Object.create(null) as Record<string, IconifyJSON>;
  * Load icon set
  */
 export function loadIconSet(prefix: string, options: IconifyPluginLoaderOptions): IconifyJSON | undefined {
-  let filename: LocatedIconSet;
+  let filename: LocatedIconSet | undefined;
 
   // Check for custom icon set
-  const customIconSet = options.iconSets?.[prefix];
-  if (customIconSet) {
+  // const customIconSet = options.iconSets?.[prefix];
+  if (options.iconSets?.[prefix]) {
+    const customIconSet = options.iconSets?.[prefix];
     switch (typeof customIconSet) {
       case 'function': {
         // Callback. Store result in options to avoid loading it again
         const result = customIconSet();
         options.iconSets[prefix] = result;
         return result;
+      }
+      case 'object': {
+        if ((customIconSet as LocalSetConfig).path) {
+          return importSvg((customIconSet as LocalSetConfig).path);
+        }
+        break;
       }
 
       case 'string': {
@@ -84,7 +100,7 @@ export function loadIconSet(prefix: string, options: IconifyPluginLoaderOptions)
   }
 
   if (!filename) {
-    return;
+    return undefined;
   }
 
   const main = typeof filename === 'string' ? filename : filename.main;
@@ -103,5 +119,8 @@ export function loadIconSet(prefix: string, options: IconifyPluginLoaderOptions)
     }
     cache[main] = result;
     return result;
-  } catch { }
+  } catch (error) {
+    console.log('error', error);
+  }
+  return undefined;
 }
