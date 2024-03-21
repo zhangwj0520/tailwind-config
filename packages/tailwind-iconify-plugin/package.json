@@ -1,0 +1,43 @@
+{
+  "name": "@zhangwj0520/tailwind-iconify-plugin",
+  "version": "0.0.1",
+  "description": "Iconify for Tailwind CSS",
+  "keywords": [
+    "tailwind"
+  ],
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+ 
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch --env.NODE_ENV developement"
+  },
+  "author": {
+    "name": "zhangweijie",
+    "email": "zhangwj0520@hotmail.com",
+    "url": "https://github.com/zhangwj0520"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/zhangwj0520",
+  "repository": {
+    "url": "https://github.com/zhangwj0520/my-package.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zhangwj0520/my-package/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">=3.0.0"
+  },
+  "dependencies": {
+    "@iconify/types": "^2.0.0",
+    "tailwindcss": "latest",
+    "tsup": "^8.0.2"
+  },
+  "devDependencies": {
+    "@iconify/utils": "^2.1.22",
+    "@types/node": "^18.14.2"
+  }
+}

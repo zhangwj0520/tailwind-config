@@ -1,8 +1,8 @@
-const plugin = require('tailwindcss/plugin')
+const plugin = require('tailwindcss/plugin');
 
 const lineClamp = plugin(
   ({ addUtilities, theme, variants, e }) => {
-    const values = theme('lineClamp')
+    const values = theme('lineClamp');
 
     addUtilities(
       [
@@ -17,7 +17,7 @@ const lineClamp = plugin(
         { '.line-clamp-none': { '-webkit-line-clamp': 'unset' } },
       ],
       variants('lineClamp'),
-    )
+    );
   },
   {
     theme: {
@@ -32,6 +32,6 @@ const lineClamp = plugin(
     },
     variants: { lineClamp: ['responsive'] },
   },
-)
+);
 
-module.exports = lineClamp
+module.exports = lineClamp;

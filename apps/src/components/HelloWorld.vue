@@ -9,6 +9,10 @@ defineProps<{
     <h1 className="text-3xl font-bold underline text-red-500">
       {{ msg }}
     </h1>
+    <div className="text-3xl demo">
+          <span className="icon-[vscode-icons--file-type-access] hover:icon-hover-[vscode-icons--file-type-access2]"></span>
+          <span className="icon-[vscode-icons--file-type-vue]"></span>
+        </div>
 
     <h3>
       You’ve successfully created a project with
